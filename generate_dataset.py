@@ -91,9 +91,8 @@ class DatasetGenerator:
         self,
         body_model,
         set: str,
-        scene_name: str,
+        cam,
         seq_name: str,
-        camera_id: int,
         frame_id: int,
         sub_id,
     ):
@@ -109,14 +108,7 @@ class DatasetGenerator:
         vertices = model_output.vertices.detach()
 
         ## project to image
-        calib_path = os.path.join(
-            SCAN_CALIBRATION_PATH,
-            scene_name,
-            "calibration",
-            f"{camera_id:03d}.xml",
-        )
 
-        cam = CalibratedCamera(calib_path=calib_path)
         projected_vertices = cam(vertices).squeeze().detach().numpy()
         bbox = self.get_bbox(projected_vertices)
         projected_vertices_anatomical = projected_vertices[
@@ -155,8 +147,7 @@ class DatasetGenerator:
         gender_mapping = json.load(open("resource/gender.json", "r"))
 
         for seq_name in SEQ_NAMES:
-            print(seq_name)
-
+            print("extracting data from ", seq_name, "...")
             splits = seq_name.split("_")
             if len(splits) == 3:
                 scene_name, sub_id, _ = splits
@@ -167,6 +158,7 @@ class DatasetGenerator:
             # extension = imgext[scene_name]
             extension = IMGEXT[scene_name]
             for sub_id in sub_ids:
+                print("sub_id: ", sub_id)
                 gender = gender_mapping[f"{int(sub_id)}"]
 
                 seq_path = os.path.join(IMAGES_ROOT_PATH, SET, seq_name)
@@ -187,6 +179,24 @@ class DatasetGenerator:
                 nb_cams = len(cams_paths)
                 for cam_path in cams_paths:
                     camera_id = int(cams_paths[0].split("_")[-1])
+                    print("camera_id: ", camera_id)
+                    if not os.path.join(
+                        SCAN_CALIBRATION_PATH,
+                        scene_name,
+                        "calibration",
+                        f"{camera_id:03d}.xml",
+                    ):
+                        print(
+                            f"skipped camera {camera_id} for scene {scene_name} because no calibration file"
+                        )
+                        continue
+                    calib_path = os.path.join(
+                        SCAN_CALIBRATION_PATH,
+                        scene_name,
+                        "calibration",
+                        f"{camera_id:03d}.xml",
+                    )
+                    cam = CalibratedCamera(calib_path=calib_path)
                     images_paths = glob.glob(
                         os.path.join(seq_path, cam_path) + f"/*.{extension}"
                     )
@@ -213,9 +223,8 @@ class DatasetGenerator:
                             ) = self.get_grountruth_landmarks(
                                 body_model,
                                 SET,
-                                scene_name,
+                                cam,
                                 seq_name,
-                                camera_id,
                                 frame_id,
                                 sub_id,
                             )
