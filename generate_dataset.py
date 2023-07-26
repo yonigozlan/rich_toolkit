@@ -11,6 +11,7 @@ from constants import (
     BODIES_PATH,
     COCO_VERTICES_NAME,
     IMAGES_ROOT_PATH,
+    IMGEXT,
     SCAN_CALIBRATION_PATH,
     SEQ_NAMES,
     SET,
@@ -152,93 +153,100 @@ class DatasetGenerator:
         it_file = 0
         nb_files = len(SEQ_NAMES)
         gender_mapping = json.load(open("resource/gender.json", "r"))
-        imgext = json.load(open("resource/imgext.json", "r"))
 
         for seq_name in SEQ_NAMES:
             print(seq_name)
-            scene_name, sub_id, _ = seq_name.split("_")
+
+            splits = seq_name.split("_")
+            if len(splits) == 3:
+                scene_name, sub_id, _ = splits
+                sub_ids = [sub_id]
+            else:
+                scene_name = splits[0]
+                sub_ids = splits[:-1]
             # extension = imgext[scene_name]
-            extension = "jpeg"
-            gender = gender_mapping[f"{int(sub_id)}"]
+            extension = IMGEXT[scene_name]
+            for sub_id in sub_ids:
+                gender = gender_mapping[f"{int(sub_id)}"]
 
-            seq_path = os.path.join(IMAGES_ROOT_PATH, SET, seq_name)
-            cams_paths = [
-                item
-                for item in os.listdir(seq_path)
-                if os.path.isdir(os.path.join(seq_path, item))
-            ]
-            body_model = SMPLX(
-                SMPLX_MODEL_DIR,
-                gender=gender,
-                num_pca_comps=12,
-                flat_hand_mean=False,
-                create_expression=True,
-                create_jaw_pose=True,
-            )
-            cam_iter = 0
-            nb_cams = len(cams_paths)
-            for cam_path in cams_paths:
-                camera_id = int(cams_paths[0].split("_")[-1])
-                images_paths = glob.glob(
-                    os.path.join(seq_path, cam_path) + f"/*.{extension}"
+                seq_path = os.path.join(IMAGES_ROOT_PATH, SET, seq_name)
+                cams_paths = [
+                    item
+                    for item in os.listdir(seq_path)
+                    if os.path.isdir(os.path.join(seq_path, item))
+                ]
+                body_model = SMPLX(
+                    SMPLX_MODEL_DIR,
+                    gender=gender,
+                    num_pca_comps=12,
+                    flat_hand_mean=False,
+                    create_expression=True,
+                    create_jaw_pose=True,
                 )
-                nb_images = len(images_paths) // self.sample_rate
-                for index_frame, image_path in enumerate(images_paths):
-                    frame_id = int(image_path.split("/")[-1].split("_")[0])
+                cam_iter = 0
+                nb_cams = len(cams_paths)
+                for cam_path in cams_paths:
+                    camera_id = int(cams_paths[0].split("_")[-1])
+                    images_paths = glob.glob(
+                        os.path.join(seq_path, cam_path) + f"/*.{extension}"
+                    )
+                    nb_images = len(images_paths) // self.sample_rate
+                    for index_frame, image_path in enumerate(images_paths):
+                        frame_id = int(image_path.split("/")[-1].split("_")[0])
 
-                    if not os.path.exists(
-                        os.path.join(
-                            BODIES_PATH,
-                            SET,
-                            seq_name,
-                            f"{frame_id:05d}",
-                            f"{sub_id}.pkl",
-                        )
-                    ):
-                        continue
-                    if index_frame % self.sample_rate == 0:
-                        (
-                            groundtruth_landmarks,
-                            coco_landmarks,
-                            bbox,
-                            success,
-                        ) = self.get_grountruth_landmarks(
-                            body_model,
-                            SET,
-                            scene_name,
-                            seq_name,
-                            camera_id,
-                            frame_id,
-                            sub_id,
-                        )
-
-                        self.total_source_images += 1
-                        if not success:
-                            self.total_error_reconstruction += 1
-                            continue
-
-                        annotation_dict = self.generate_annotation_dict()
-                        annotation_dict["bbox"] = bbox.tolist()
-                        annotation_dict["keypoints"] = groundtruth_landmarks
-                        annotation_dict["coco_keypoints"] = coco_landmarks
-
-                        self.data_dict["annotations"].append(annotation_dict)
-
-                        image_dict = {
-                            "id": len(self.data_dict["images"]),
-                            "width": self.img_width,
-                            "height": self.img_height,
-                            "frame_number": index_frame,
-                            "img_path": image_path,
-                        }
-                        self.data_dict["images"].append(image_dict)
-
-                        if iteration % 100 == 0:
-                            print(
-                                f"scene {it_file}/{nb_files}, cam {cam_iter}/{nb_cams}, {index_frame//self.sample_rate}/{nb_images}"
+                        if not os.path.exists(
+                            os.path.join(
+                                BODIES_PATH,
+                                SET,
+                                seq_name,
+                                f"{frame_id:05d}",
+                                f"{sub_id}.pkl",
                             )
-                        iteration += 1
-                cam_iter += 1
+                        ):
+                            continue
+                        if index_frame % self.sample_rate == 0:
+                            (
+                                groundtruth_landmarks,
+                                coco_landmarks,
+                                bbox,
+                                success,
+                            ) = self.get_grountruth_landmarks(
+                                body_model,
+                                SET,
+                                scene_name,
+                                seq_name,
+                                camera_id,
+                                frame_id,
+                                sub_id,
+                            )
+
+                            self.total_source_images += 1
+                            if not success:
+                                self.total_error_reconstruction += 1
+                                continue
+
+                            annotation_dict = self.generate_annotation_dict()
+                            annotation_dict["bbox"] = bbox.tolist()
+                            annotation_dict["keypoints"] = groundtruth_landmarks
+                            annotation_dict["coco_keypoints"] = coco_landmarks
+
+                            self.data_dict["annotations"].append(annotation_dict)
+
+                            image_dict = {
+                                "id": len(self.data_dict["images"]),
+                                "width": self.img_width,
+                                "height": self.img_height,
+                                "frame_number": index_frame,
+                                "img_path": image_path,
+                            }
+                            self.data_dict["images"].append(image_dict)
+
+                            if iteration % 100 == 0:
+                                print(
+                                    f"scene {it_file}/{nb_files}, cam {cam_iter}/{nb_cams}, {index_frame//self.sample_rate}/{nb_images}"
+                                )
+                            iteration += 1
+                    cam_iter += 1
             it_file += 1
 
         with open(

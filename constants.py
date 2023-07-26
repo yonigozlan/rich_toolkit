@@ -1,4 +1,5 @@
 import csv
+import json
 
 import numpy as np
 
@@ -35,6 +36,7 @@ SMPLX_MODEL_DIR = "../../smplx"
 SET = "test"
 BODIES_PATH = "../full_test/bodies"
 SCAN_CALIBRATION_PATH = "../full_test/scan_calibration"
+IMGEXT = json.load(open("resource/imgext.json", "r"))
 
 
 def load_augmented_corr():
