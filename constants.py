@@ -2,7 +2,7 @@ import csv
 
 import numpy as np
 
-IMAGES_ROOT_PATH = "../full_test/ps/project/multi-ioi/rich_release/test"
+IMAGES_ROOT_PATH = "../full_test/ps/project/multi-ioi/rich_release"
 SEQ_NAMES = [
     "Gym_010_cooking1",
     "Gym_011_dips4",
