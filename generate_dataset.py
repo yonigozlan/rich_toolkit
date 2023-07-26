@@ -155,6 +155,7 @@ class DatasetGenerator:
         imgext = json.load(open("resource/imgext.json", "r"))
 
         for seq_name in SEQ_NAMES:
+            print(seq_name)
             scene_name, sub_id, _ = seq_name.split("_")
             # extension = imgext[scene_name]
             extension = "jpeg"
