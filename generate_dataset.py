@@ -180,7 +180,16 @@ class DatasetGenerator:
                 nb_images = len(images_paths) // self.sample_rate
                 for index_frame, image_path in enumerate(images_paths):
                     frame_id = int(image_path.split("/")[-1].split("_")[0])
-                    if frame_id < 5 or frame_id > 254:
+
+                    if os.path.exists(
+                        os.path.join(
+                            "resource/bodies",
+                            set,
+                            seq_name,
+                            f"{frame_id:05d}",
+                            f"{sub_id}.pkl",
+                        )
+                    ):
                         continue
                     if index_frame % self.sample_rate == 0:
                         (
