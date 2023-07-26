@@ -178,7 +178,7 @@ class DatasetGenerator:
                 cam_iter = 0
                 nb_cams = len(cams_paths)
                 for cam_path in cams_paths:
-                    camera_id = int(cams_paths[0].split("_")[-1])
+                    camera_id = int(cam_path.split("_")[-1])
                     print("camera_id: ", camera_id)
                     calib_path = os.path.join(
                         SCAN_CALIBRATION_PATH,
