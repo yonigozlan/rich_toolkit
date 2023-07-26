@@ -180,22 +180,18 @@ class DatasetGenerator:
                 for cam_path in cams_paths:
                     camera_id = int(cams_paths[0].split("_")[-1])
                     print("camera_id: ", camera_id)
-                    if not os.path.join(
-                        SCAN_CALIBRATION_PATH,
-                        scene_name,
-                        "calibration",
-                        f"{camera_id:03d}.xml",
-                    ):
-                        print(
-                            f"skipped camera {camera_id} for scene {scene_name} because no calibration file"
-                        )
-                        continue
                     calib_path = os.path.join(
                         SCAN_CALIBRATION_PATH,
                         scene_name,
                         "calibration",
                         f"{camera_id:03d}.xml",
                     )
+                    if not os.path.exists(calib_path):
+                        print(
+                            f"skipped camera {camera_id} for scene {scene_name} because no calibration file"
+                        )
+                        continue
+
                     cam = CalibratedCamera(calib_path=calib_path)
                     images_paths = glob.glob(
                         os.path.join(seq_path, cam_path) + f"/*.{extension}"
