@@ -8,8 +8,10 @@ import torch
 from constants import (
     AUGMENTED_VERTICES_INDEX_DICT,
     AUGMENTED_VERTICES_NAMES,
+    BODIES_PATH,
     COCO_VERTICES_NAME,
     IMAGES_ROOT_PATH,
+    SCAN_CALIBRATION_PATH,
     SEQ_NAMES,
     SET,
     SMPLX_MODEL_DIR,
@@ -95,7 +97,7 @@ class DatasetGenerator:
         sub_id,
     ):
         smplx_params_fn = os.path.join(
-            "resource/bodies", set, seq_name, f"{frame_id:05d}", f"{sub_id}.pkl"
+            BODIES_PATH, set, seq_name, f"{frame_id:05d}", f"{sub_id}.pkl"
         )
         body_params = pickle.load(open(smplx_params_fn, "rb"))
         body_params = {k: torch.from_numpy(v) for k, v in body_params.items()}
@@ -107,7 +109,7 @@ class DatasetGenerator:
 
         ## project to image
         calib_path = os.path.join(
-            "resource/scan_calibration",
+            SCAN_CALIBRATION_PATH,
             scene_name,
             "calibration",
             f"{camera_id:03d}.xml",
@@ -172,6 +174,8 @@ class DatasetGenerator:
                 create_expression=True,
                 create_jaw_pose=True,
             )
+            cam_iter = 0
+            nb_cams = len(cams_paths)
             for cam_path in cams_paths:
                 camera_id = int(cams_paths[0].split("_")[-1])
                 images_paths = glob.glob(
@@ -181,10 +185,10 @@ class DatasetGenerator:
                 for index_frame, image_path in enumerate(images_paths):
                     frame_id = int(image_path.split("/")[-1].split("_")[0])
 
-                    if os.path.exists(
+                    if not os.path.exists(
                         os.path.join(
-                            "resource/bodies",
-                            set,
+                            BODIES_PATH,
+                            SET,
                             seq_name,
                             f"{frame_id:05d}",
                             f"{sub_id}.pkl",
@@ -230,10 +234,10 @@ class DatasetGenerator:
 
                         if iteration % 100 == 0:
                             print(
-                                f"scene {it_file}/{nb_files}, {index_frame//self.sample_rate}/{nb_images}"
+                                f"scene {it_file}/{nb_files}, cam {cam_iter}/{nb_cams}, {index_frame//self.sample_rate}/{nb_images}"
                             )
                         iteration += 1
-
+                cam_iter += 1
             it_file += 1
 
         with open(
@@ -250,6 +254,6 @@ class DatasetGenerator:
 if __name__ == "__main__":
     dataset_generator = DatasetGenerator(
         output_path="test_annotations",
-        sample_rate=1,
+        sample_rate=6,
     )
     dataset_generator.generate_dataset()

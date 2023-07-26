@@ -2,10 +2,39 @@ import csv
 
 import numpy as np
 
-IMAGES_ROOT_PATH = "resource/images"
-SEQ_NAMES = ["Gym_012_lunge2"]
-SMPLX_MODEL_DIR = "../models/smplx"
+IMAGES_ROOT_PATH = "../full_test/ps/project/multi-ioi/rich_release/test"
+SEQ_NAMES = [
+    "Gym_010_cooking1",
+    "Gym_011_dips4",
+    "Gym_013_pushup1",
+    "LectureHall_019_wipingchairs1",
+    "ParkingLot2_009_overfence1",
+    "Gym_010_dips1",
+    "Gym_012_cooking2",
+    "LectureHall_009_021_reparingprojector1",
+    "LectureHall_021_plankjack1",
+    "ParkingLot2_009_spray1",
+    "Gym_010_lunge2",
+    "Gym_013_burpee4",
+    "LectureHall_009_sidebalancerun1",
+    "LectureHall_021_sidebalancerun1",
+    "ParkingLot2_017_eating1",
+    "Gym_010_mountainclimber1",
+    "Gym_013_dips3",
+    "LectureHall_010_plankjack1",
+    "ParkingLot2_009_burpeejump1",
+    "ParkingLot2_017_overfence1",
+    "Gym_011_burpee2",
+    "Gym_013_lunge1",
+    "LectureHall_010_sidebalancerun1",
+    "ParkingLot2_009_impro5",
+    "ParkingLot2_017_pushup2",
+]
+
+SMPLX_MODEL_DIR = "../../smplx"
 SET = "test"
+BODIES_PATH = "../full_test/bodies"
+SCAN_CALIBRATION_PATH = "../full_test/scan_calibration"
 
 
 def load_augmented_corr():
