@@ -154,7 +154,7 @@ class DatasetGenerator:
                 sub_ids = [sub_id]
             else:
                 scene_name = splits[0]
-                sub_ids = splits[:-1]
+                sub_ids = splits[1:-1]
             # extension = imgext[scene_name]
             extension = IMGEXT[scene_name]
             for sub_id in sub_ids:
