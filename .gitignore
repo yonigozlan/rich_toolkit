@@ -1,0 +1,7 @@
+resource/images
+resource/bodies
+resource/multicam2world
+scan_calibration
+**.ipynb
+
+**/__pycache__
