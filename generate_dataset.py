@@ -131,8 +131,8 @@ class DatasetGenerator:
             if (
                 point["x"] < 0
                 or point["y"] < 0
-                or point["x"] > 1280
-                or point["y"] > 720
+                or point["x"] > self.img_width
+                or point["y"] > self.img_height
             ):
                 groundtruth_landmarks[name]["v"] = 0
             else:
