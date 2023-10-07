@@ -37,7 +37,9 @@ def downsample_images(source_folder, annotation_file, write_images=False, write_
         for annotation in annotations["images"]:
             annotation['width'] = new_width
             annotation['height'] = new_height
-            annotation["img_path"] = os.path.join(dest_folder, os.path.relpath(annotation["img_path"], source_folder).removeprefix("../../full_test/"))
+            new_img_path = os.path.join(dest_folder, os.path.relpath(annotation["img_path"], source_folder).removeprefix("../../full_test/"))
+            new_img_path = new_img_path[:-3] + "jpg"
+            annotation["img_path"] = new_img_path
         for annotation in annotations["annotations"]:
                 annotation["bbox"] = [round(x * ratio) for x in annotation["bbox"]]
                 for keypoint_name, keypoint in annotation["keypoints"].items():
