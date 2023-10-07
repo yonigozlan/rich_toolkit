@@ -48,7 +48,7 @@ def downsample_images(source_folder, annotation_file, write_images=False, write_
         dest_annotation_file = os.path.join(dest_folder, os.path.relpath(annotation_file, source_folder))
         os.makedirs(os.path.dirname(dest_annotation_file), exist_ok=True)
         with open(dest_annotation_file, 'w') as f:
-            json.dump(annotations, f)
+            json.dump(annotations, f, ensure_ascii=False, indent=4)
 
 
 if __name__ == '__main__':
