@@ -29,7 +29,7 @@ def downsample_images(source_folder, annotation_file, write_images=False, write_
                     dest_path = os.path.join(dest_folder, os.path.relpath(img_path, source_folder))
                     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
                     dest_folder = dest_folder[:-3] + "jpg"
-                    img.save(dest_path, 'jpg')
+                    img.save(dest_path, "JPEG")
     if write_annotations:
         # Downsample the corresponding annotations
         with open(annotation_file) as f:
