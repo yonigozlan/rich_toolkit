@@ -17,8 +17,8 @@ def downsample_images(source_folder, annotation_file, write_images=False, write_
 
     if write_images:
         # Traverse through the source folder and find all the image files
-        for root, dirs, files in os.walk(source_folder):
-            for file in tqdm(files):
+        for root, dirs, files in tqdm(os.walk(source_folder)):
+            for file in files:
                 if file.endswith('.bmp'):
                     # Open the image file and downsample it to 1280x720
                     img_path = os.path.join(root, file)
@@ -28,7 +28,7 @@ def downsample_images(source_folder, annotation_file, write_images=False, write_
                     # Save the downsampled image in the new folder with the same nested architecture
                     dest_path = os.path.join(dest_folder, os.path.relpath(img_path, source_folder))
                     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
-                    dest_folder[:-3] = "jpg"
+                    dest_folder = dest_folder[:-3] + "jpg"
                     img.save(dest_path, 'jpg')
     if write_annotations:
         # Downsample the corresponding annotations
