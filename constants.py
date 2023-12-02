@@ -89,7 +89,7 @@ SEQ_NAMES = [
 
 SMPLX_MODEL_DIR = "../../smplx"
 SET = "test"
-BODIES_PATH = "../bodies"
+BODIES_PATH = "../"
 SCAN_CALIBRATION_PATH = "../scan_calibration"
 IMGEXT = json.load(open("./resource/imgext.json", "r"))
 
