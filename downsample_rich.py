@@ -37,7 +37,7 @@ def downsample_images(source_folder, annotation_file, write_images=False, write_
         for annotation in annotations["images"]:
             annotation['width'] = new_width
             annotation['height'] = new_height
-            new_img_path = os.path.join(dest_folder, os.path.relpath(annotation["img_path"], source_folder).removeprefix("../../full_test/"))
+            new_img_path = os.path.join(dest_folder, os.path.relpath(annotation["img_path"], source_folder).removeprefix("../../"))
             new_img_path = new_img_path[:-3] + "jpg"
             annotation["img_path"] = new_img_path
         for annotation in annotations["annotations"]:
@@ -56,6 +56,6 @@ def downsample_images(source_folder, annotation_file, write_images=False, write_
 
 
 if __name__ == '__main__':
-    downsample_images("/scratch/users/yonigoz/RICH/full_test",
-                      "/scratch/users/yonigoz/RICH/full_test/val_annotations.json",
+    downsample_images("/scratch/users/yonigoz/RICH",
+                      "/scratch/users/yonigoz/RICH/val_annotations.json",
                       write_images=False, write_annotations=True)
