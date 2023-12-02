@@ -17,6 +17,7 @@ def downsample_images(source_folder, annotation_file, write_images=False, write_
 
     if write_images:
         # Traverse through the source folder and find all the image files
+        cnt_images = 0
         for root, dirs, files in tqdm(os.walk(source_folder), total=len(os.listdir(source_folder))):
             for file in files:
                 if file.endswith('.bmp'):
@@ -30,6 +31,10 @@ def downsample_images(source_folder, annotation_file, write_images=False, write_
                     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
                     dest_path = dest_path[:-3] + "jpg"
                     img.save(dest_path, "JPEG")
+                    cnt_images += 1
+                    if cnt_images % 100 == 0:
+                        print(f"Saved {cnt_images} images")
+        print(f"Saved {cnt_images} images in total")
     if write_annotations:
         # Downsample the corresponding annotations
         with open(annotation_file) as f:
