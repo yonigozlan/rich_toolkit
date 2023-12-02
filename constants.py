@@ -3,8 +3,8 @@ import json
 
 import numpy as np
 
-IMAGES_ROOT_PATH = "../full_test/ps/project/multi-ioi/rich_release"
-SEQ_NAMES = [
+IMAGES_ROOT_PATH = "../ps/project/multi-ioi/rich_release"
+SEQ_NAMES_OLD = [
     "Gym_010_cooking1",
     "Gym_011_dips4",
     "Gym_013_pushup1",
@@ -32,10 +32,65 @@ SEQ_NAMES = [
     "ParkingLot2_017_pushup2",
 ]
 
+SEQ_NAMES = [
+    "Gym_010_cooking1",
+    "Gym_010_dips1",
+    "Gym_010_dips2",
+    "Gym_010_lunge1",
+    "Gym_010_lunge2",
+    "Gym_010_mountainclimber1",
+    "Gym_010_mountainclimber2",
+    "Gym_010_pushup1",
+    "Gym_010_pushup2",
+    "Gym_011_burpee2",
+    "Gym_011_cooking1",
+    "Gym_011_cooking2",
+    "Gym_011_dips1",
+    "Gym_011_dips2",
+    "Gym_011_dips3",
+    "Gym_011_dips4",
+    "Gym_011_pushup1",
+    "Gym_011_pushup2",
+    "Gym_012_cooking2",
+    "Gym_012_lunge1",
+    "Gym_012_lunge2",
+    "Gym_012_pushup2",
+    "Gym_013_burpee4",
+    "Gym_013_dips1",
+    "Gym_013_dips2",
+    "Gym_013_dips3",
+    "Gym_013_lunge1",
+    "Gym_013_lunge2",
+    "Gym_013_pushup1",
+    "Gym_013_pushup2",
+    "LectureHall_009_021_reparingprojector1",
+    "LectureHall_009_sidebalancerun1",
+    "LectureHall_010_plankjack1",
+    "LectureHall_010_sidebalancerun1",
+    "LectureHall_019_wipingchairs1",
+    "LectureHall_021_plankjack1",
+    "LectureHall_021_sidebalancerun1",
+    "ParkingLot2_009_burpeejump1",
+    "ParkingLot2_009_burpeejump2",
+    "ParkingLot2_009_impro1",
+    "ParkingLot2_009_impro2",
+    "ParkingLot2_009_impro5",
+    "ParkingLot2_009_overfence1",
+    "ParkingLot2_009_overfence2",
+    "ParkingLot2_009_spray1",
+    "ParkingLot2_017_burpeejump1",
+    "ParkingLot2_017_burpeejump2",
+    "ParkingLot2_017_eating1",
+    "ParkingLot2_017_overfence1",
+    "ParkingLot2_017_overfence2",
+    "ParkingLot2_017_pushup1",
+    "ParkingLot2_017_pushup2",
+]
+
 SMPLX_MODEL_DIR = "../../smplx"
 SET = "test"
-BODIES_PATH = "../full_test/bodies"
-SCAN_CALIBRATION_PATH = "../full_test/scan_calibration"
+BODIES_PATH = "../bodies"
+SCAN_CALIBRATION_PATH = "../scan_calibration"
 IMGEXT = json.load(open("resource/imgext.json", "r"))
 
 
