@@ -18,7 +18,7 @@ def downsample_images(source_folder, annotation_file, write_images=False, write_
     if write_images:
         # Traverse through the source folder and find all the image files
         cnt_images = 0
-        for root, dirs, files in tqdm(os.walk(source_folder), total=len(os.listdir(source_folder))):
+        for root, dirs, files in os.walk(os.path.join(source_folder, 'ps/project/multi-ioi/rich_release')):
             for file in files:
                 if file.endswith('.bmp'):
                     # Open the image file and downsample it to 1280x720
