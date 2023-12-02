@@ -63,4 +63,4 @@ def downsample_images(source_folder, annotation_file, write_images=False, write_
 if __name__ == '__main__':
     downsample_images("/scratch/users/yonigoz/RICH",
                       "/scratch/users/yonigoz/RICH/val_annotations.json",
-                      write_images=False, write_annotations=True)
+                      write_images=True, write_annotations=True)
