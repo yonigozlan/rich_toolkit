@@ -91,7 +91,7 @@ SMPLX_MODEL_DIR = "../../smplx"
 SET = "test"
 BODIES_PATH = "../bodies"
 SCAN_CALIBRATION_PATH = "../scan_calibration"
-IMGEXT = json.load(open("resource/imgext.json", "r"))
+IMGEXT = json.load(open("./resource/imgext.json", "r"))
 
 
 def load_augmented_corr():
