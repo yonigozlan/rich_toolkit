@@ -20,7 +20,8 @@ def downsample_images(source_folder, annotation_file, write_images=False, write_
         cnt_images = 0
         for root, dirs, files in os.walk(os.path.join(source_folder, 'ps/project/multi-ioi/rich_release')):
             for file in files:
-                if file.endswith('.bmp'):
+                # if file.endswith('.bmp') or file.endswith('.png'):
+                if file.endswith('.png'):
                     # Open the image file and downsample it to 1280x720
                     img_path = os.path.join(root, file)
                     img = Image.open(img_path)
@@ -63,4 +64,4 @@ def downsample_images(source_folder, annotation_file, write_images=False, write_
 if __name__ == '__main__':
     downsample_images("/scratch/users/yonigoz/RICH",
                       "/scratch/users/yonigoz/RICH/val_annotations.json",
-                      write_images=True, write_annotations=True)
+                      write_images=True, write_annotations=False)
